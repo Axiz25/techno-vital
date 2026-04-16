@@ -1,0 +1,453 @@
+﻿<!DOCTYPE html>
+<html lang='fr'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>VITAL TPL App</title>
+  <link rel='stylesheet' href='vital_tpl_app.css'>
+</head>
+<body>
+<div class="vital-root" id="root">
+  <div class="app-frame">
+    <div class="app-screen">
+      <div class="status-bar">
+        <span>9:41</span>
+        <span style="font-size:9px; color:#00D9FF; letter-spacing:1px;">VITAL OS</span>
+        <span>▮▮▮▮</span>
+      </div>
+
+      <!-- ===== SCREEN: WELCOME ===== -->
+      <div class="screen active screen-content welcome-screen" id="s-welcome">
+        <div class="welcome-card">
+          <div class="welcome-logo">
+            <img src="668079752_1774859486823638_343593758530899661_n.png" alt="VITAL Logo">
+          </div>
+
+          <div class="logo-mark">
+            <div class="logo-v">VITAL</div>
+            <div class="logo-sub">TPL · ISSATKR</div>
+          </div>
+
+          <div class="welcome-title">Bienvenue sur VITAL</div>
+          <div class="welcome-subtitle">Connecte-toi au club technologique TPL ou crée ton compte.</div>
+
+          <div class="welcome-cta">
+            <button class="vbtn primary full" onclick="goScreen('auth'); setActiveNav(-1)">Se connecter</button>
+            <button class="vbtn secondary full" onclick="goScreen('signup'); setActiveNav(-1)">Créer un compte</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SCREEN: AUTH ===== -->
+      <div class="screen screen-content" id="s-auth">
+        <div class="auth-card">
+          <div class="logo-mark">
+            <div class="logo-v">VITAL</div>
+            <div class="logo-sub">TPL · ISSATKR</div>
+          </div>
+
+          <div class="pulse-badge">
+            <div class="pulse-dot"></div>
+            SECURE LOGIN
+          </div>
+
+          <div class="input-group">
+            <input id="login-name" class="vinput" type="text" placeholder="Nom complet...">
+          </div>
+          <div class="input-group">
+            <input id="login-email" class="vinput" type="email" placeholder="Email...">
+          </div>
+          <div class="input-group">
+            <input id="login-password" class="vinput" type="password" placeholder="Mot de passe...">
+          </div>
+          <div id="login-error" class="vcard-text" style="font-size:11px; color:#FF6B6B; margin-top:4px; display:none;"></div>
+
+          <button class="vbtn primary full" onclick="handleLogin()">Se Connecter</button>
+          <button class="vbtn secondary full" style="margin-top:10px;" onclick="goScreen('signup'); setActiveNav(-1)">Créer un compte</button>
+        </div>
+
+        <div class="vsep"></div>
+
+        <div style="display:flex; gap:8px;">
+          <button class="vbtn secondary" style="flex:1;font-size:11px;">Google</button>
+          <button class="vbtn secondary" style="flex:1;font-size:11px;">Apple</button>
+        </div>
+
+        <div style="margin-top:20px; text-align:center; font-size:11px; color:#2d3748; font-family:'Space Mono',monospace;">
+          Chiffrement E2E · RGPD Compliant
+        </div>
+      </div>
+
+      <!-- ===== SCREEN: SIGNUP ===== -->
+      <div class="screen screen-content" id="s-signup">
+        <div style="margin-top:16px;">
+          <div class="screen-title">Inscription</div>
+          <div class="screen-subtitle">Créer un compte VITAL</div>
+        </div>
+
+        <div class="auth-card">
+          <div class="welcome-logo">
+            <img src="668079752_1774859486823638_343593758530899661_n.png" alt="VITAL Logo">
+          </div>
+          <div class="logo-mark">
+            <div class="logo-v">VITAL</div>
+            <div class="logo-sub">Nouveau membre</div>
+          </div>
+
+          <div class="input-group">
+            <input id="signup-name" class="vinput" type="text" placeholder="Nom complet...">
+          </div>
+          <div class="input-group">
+            <input id="signup-email" class="vinput" type="email" placeholder="Email...">
+          </div>
+          <div class="input-group">
+            <input id="signup-password" class="vinput" type="password" placeholder="Mot de passe...">
+          </div>
+          <div class="input-group">
+            <input id="signup-confirm" class="vinput" type="password" placeholder="Confirmer le mot de passe...">
+          </div>
+          <div id="signup-error" class="vcard-text" style="font-size:11px; color:#FF6B6B; margin-top:4px; display:none;"></div>
+
+          <button class="vbtn primary full" onclick="handleRegister()">S'inscrire</button>
+          <button class="vbtn secondary full" style="margin-top:10px;font-size:11px;" onclick="goScreen('auth'); setActiveNav(-1)">J'ai déjà un compte</button>
+        </div>
+      </div>
+
+      <!-- ===== SCREEN: MFA ===== -->
+      <div class="screen screen-content" id="s-mfa">
+        <div style="margin-top:16px;">
+          <div class="screen-title">Vérification</div>
+          <div class="screen-subtitle">Code envoyé à ton compte</div>
+        </div>
+
+        <div class="secure-badge">
+          <span class="lock-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzAwRkY4OCIgZD0iTTE3IDhWN2E1IDUgMCAwIDAtMTAgMHYxSDVhMSAxIDAgMCAwLTEgMXYxMWExIDEgMCAwIDAgMSAxaDE0YTEgMSAwIDAgMCAxLTFWOWExIDEgMCAwIDAtMS0xaC0yem0tOC0xYTMgMyAwIDAgMSA2IDB2MUg5Vjd6bTcgNnY0SDh2LTRoMXYtMmEyIDIgMCAxIDEgNCAwdjJoMXoiLz48L3N2Zz4=" alt="lock icon"></span>
+          <span>MFA ACTIVÉ · BIOMÉTRIE PRÊTE</span>
+        </div>
+        <div id="mfa-email-note" style="font-size:11px; color:#4a5568; font-family:'Space Mono',monospace; margin-top:4px; margin-bottom:10px;">Code envoyé à ton adresse e-mail.</div>
+        <div id="mfa-error" class="vcard-text" style="font-size:11px; color:#FF6B6B; margin-top:4px; display:none;"></div>
+
+        <div class="otp-row">
+          <input class="otp-box" type="text" inputmode="numeric" maxlength="1" value="">
+          <input class="otp-box" type="text" inputmode="numeric" maxlength="1" value="">
+          <input class="otp-box" type="text" inputmode="numeric" maxlength="1" value="">
+          <input class="otp-box" type="text" inputmode="numeric" maxlength="1" value="">
+          <input class="otp-box" type="text" inputmode="numeric" maxlength="1" value="">
+          <input class="otp-box" type="text" inputmode="numeric" maxlength="1" value="">
+        </div>
+
+        <button class="vbtn primary full" onclick="verifyOtp()">Vérifier &amp; Entrer</button>
+
+        <div style="margin-top:12px; text-align:center; font-size:11px; color:#4a5568; font-family:'Space Mono',monospace;">
+          Pas reçu ? <span style="color:#00D9FF; cursor:pointer;">Renvoyer</span>
+        </div>
+
+        <div class="vcard" style="margin-top:20px; --accent:#9D4EDD">
+          <div class="vcard-title" style="font-size:11px;">Authentification Biométrique</div>
+          <div class="vcard-text">Face ID · Touch ID disponibles</div>
+        </div>
+      </div>
+
+      <!-- ===== SCREEN: HOME ===== -->
+      <div class="screen screen-content" id="s-home">
+        <div style="margin-top:8px; display:flex; align-items:center; justify-content:space-between;">
+          <div>
+            <div class="screen-title" id="user-greeting">Bonjour, Aziz 👋</div>
+            <div class="screen-subtitle">Mardi, 15 Avril 2025</div>
+          </div>
+          <div id="user-avatar" style="width:42px;height:42px;border-radius:50%;background:#00D9FF22;border:1.5px solid #00D9FF44;display:flex;align-items:center;justify-content:center;color:#00D9FF;font-weight:800;font-size:15px;">AZ</div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <span class="stat-val">3</span>
+            <span class="stat-lbl">EVENTS</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" style="color:#9D4EDD;">12</span>
+            <span class="stat-lbl">PROJETS</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" style="color:#00FF88;">245</span>
+            <span class="stat-lbl">MEMBRES</span>
+          </div>
+        </div>
+
+        <div style="font-size:11px; font-weight:700; letter-spacing:2px; color:#4a5568; font-family:'Space Mono',monospace; margin-bottom:8px;">PROCHAIN ÉVÉNEMENT</div>
+
+        <div class="vcard" style="--accent:#00D9FF">
+          <div class="vcard-title">🤖 Robotics Challenge</div>
+          <div class="vcard-text">Avr 20 · 14h00 · Salle B12 · 120 inscrits</div>
+          <div class="row">
+            <button class="vbtn purple" style="font-size:11px;" onclick="goScreen('mentor'); setActiveNav(2)">Ask Mentor</button>
+            <button class="vbtn primary" style="font-size:11px;" onclick="goScreen('events'); setActiveNav(1)">S'inscrire</button>
+          </div>
+        </div>
+
+        <div class="vcard purple">
+          <div class="vcard-title">🧠 AI Workshop — Rappel</div>
+          <div class="vcard-text">Avr 22 · 15h00 · Tu es inscrit</div>
+        </div>
+
+        <div class="vcard green">
+          <div class="vcard-title">📝 Blog TPL — Nouvel article</div>
+          <div class="vcard-text">Résumé dernière session disponible</div>
+        </div>
+      </div>
+
+      <!-- ===== SCREEN: EVENTS ===== -->
+      <div class="screen screen-content" id="s-events">
+        <div style="margin-top:8px;">
+          <div class="screen-title">Événements</div>
+          <div class="screen-subtitle">Calendrier du club</div>
+        </div>
+
+        <div class="vcard" style="--accent:#00D9FF; padding:12px;">
+          <div class="cal-grid" id="cal-grid">
+          </div>
+        </div>
+
+        <div style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;">
+          <button class="vbtn primary event-filter-btn active" data-filter="all" style="padding:6px 12px; font-size:11px;" onclick="setEventFilter('all', this)">Tous</button>
+          <button class="vbtn secondary event-filter-btn" data-filter="workshop" style="padding:6px 12px; font-size:11px;" onclick="setEventFilter('workshop', this)">Workshop</button>
+          <button class="vbtn secondary event-filter-btn" data-filter="challenge" style="padding:6px 12px; font-size:11px;" onclick="setEventFilter('challenge', this)">Challenge</button>
+          <button class="vbtn secondary event-filter-btn" data-filter="hackathon" style="padding:6px 12px; font-size:11px;" onclick="setEventFilter('hackathon', this)">Hackathon</button>
+        </div>
+
+        <div id="event-list"></div>
+
+        <div id="event-signup-panel" class="vcard" style="display:none; --accent:#9D4EDD; padding:14px; margin-top:14px; width: calc(100% + 36px); margin-left: -18px; border-radius: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+            <div>
+              <div class="vcard-title">Inscription événement</div>
+            </div>
+            <button class="vbtn secondary" style="width:34px; height:34px; font-size:18px; padding:0; line-height:1;" onclick="hideEventSignup()">-</button>
+          </div>
+          <div class="vcard-text" id="selected-event-name" style="font-weight:700; margin-top:8px;"></div>
+          <div class="vcard-text" id="selected-event-time" style="font-size:12px; color:#cbd5e0;"></div>
+          <div class="vcard-text" id="selected-event-summary" style="margin-top:10px; color:#e2e8f0;"></div>
+          <div class="input-group" style="margin-top:12px;"><input id="event-name-input" class="vinput" type="text" placeholder="Ton nom"></div>
+          <div class="input-group" style="margin-top:10px;"><input id="event-email-input" class="vinput" type="email" placeholder="Ton email"></div>
+          <button class="vbtn primary full" style="margin-top:12px; font-size:11px;" onclick="registerForEvent()">Confirmer l'inscription</button>
+          <div id="event-signup-status" class="vcard-text" style="font-size:11px; margin-top:10px; color:#cbd5e0;"></div>
+          <div style="font-size:10px; color:#718096; margin-top:8px;">Clique sur une date violette pour voir l'événement du jour ou utilise le bouton S'inscrire.</div>
+        </div>
+      </div>
+
+      <!-- ===== SCREEN: AI MENTOR ===== -->
+      <div class="screen" id="s-mentor" style="display:none; flex-direction:column; height:100%;">
+        <div class="screen-content" style="padding-bottom:0;">
+          <div style="margin-top:8px; margin-bottom:12px;">
+            <div class="screen-title" style="font-size:20px;">TPL Mentor</div>
+            <div class="screen-subtitle" style="margin-bottom:0;">Powered by Claude AI · RAG actif</div>
+          </div>
+          <div class="pulse-badge">
+            <div class="pulse-dot"></div>
+            CONTEXTE TPL CHARGÉ
+          </div>
+
+          <div class="vcard amber" style="margin-top:12px; --accent:#FFB020;">
+            <div class="vcard-title">Base incidents</div>
+            <div class="vcard-text" id="security-db-summary">3 incidents de sécurité enregistrés</div>
+            <button class="vbtn secondary full" style="font-size:11px;" onclick="toggleSecurityDb()">Voir DB</button>
+          </div>
+          <div class="vcard" id="security-db-panel" style="display:none; --accent:#00FF88; padding:12px;">
+            <div id="security-db-table" style="font-size:11px; font-family:'Space Mono',monospace;"></div>
+          </div>
+        </div>
+
+        <div class="screen-content" style="flex:1;" id="chat-messages">
+          <div class="chat-list" id="chat-list">
+            <div class="bubble bot">Salam! Je suis le Mentor TPL ISSATKR. Je connais les workshops passés, les projets du club et je peux t'aider avec du code. Pose-moi n'importe quelle question ! 🚀</div>
+          </div>
+        </div>
+
+        <div class="chat-input-row">
+          <input class="chat-input" id="chat-input" type="text" placeholder="Pose une question sur AI, robotique, cybersécurité...">
+          <button class="chat-send" id="chat-send-btn" onclick="sendChat()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#050814" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== SCREEN: RESOURCES ===== -->
+      <div class="screen screen-content" id="s-resources">
+        <div style="margin-top:8px;">
+          <div class="screen-title">Documentation</div>
+          <div class="screen-subtitle">Accès aux guides, spécifications et livrables VITAL — situé à ISST Tunis, Salle F1.</div>
+        </div>
+
+        <div class="vcard qr-card" style="--accent:#00D9FF;">
+          <div class="vcard-title" style="font-size:14px;">QR Code Documentation</div>
+          <div class="vcard-text" style="margin-top:6px;">Scanne ce code pour accéder au guide VITAL, aux workflows professionnels et aux ressources du club.</div>
+          <div class="qr-grid">
+            <div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div>
+            <div class="qr-cell dark"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell dark"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell dark"></div>
+            <div class="qr-cell dark"></div><div class="qr-cell"></div><div class="qr-cell dark"></div><div class="qr-cell"></div><div class="qr-cell dark"></div><div class="qr-cell"></div><div class="qr-cell dark"></div>
+            <div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div>
+            <div class="qr-cell dark"></div><div class="qr-cell"></div><div class="qr-cell dark"></div><div class="qr-cell"></div><div class="qr-cell dark"></div><div class="qr-cell"></div><div class="qr-cell dark"></div>
+            <div class="qr-cell dark"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell dark"></div><div class="qr-cell"></div><div class="qr-cell"></div><div class="qr-cell dark"></div>
+            <div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div><div class="qr-cell dark"></div>
+          </div>
+          <div class="row" style="margin-top:14px;">
+            <button class="vbtn primary" style="font-size:11px;">Télécharger PDF</button>
+            <button class="vbtn secondary" style="font-size:11px;">Copier lien</button>
+          </div>
+          <div class="vcard-text" style="margin-top:10px; font-size:10px; color:#718096;">QR code fake pour la démo. Remplace le lien avec ta vraie documentation quand tu veux.</div>
+        </div>
+
+        <div style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;">
+          <button class="vbtn primary resource-filter-btn active" id="filter-all" data-filter="all" style="padding:6px 12px; font-size:11px;" onclick="setResourceFilter('all', this)">Tout</button>
+          <button class="vbtn secondary resource-filter-btn" id="filter-video" data-filter="video" style="padding:6px 12px; font-size:11px;" onclick="setResourceFilter('video', this)">Vidéos</button>
+          <button class="vbtn secondary resource-filter-btn" id="filter-doc" data-filter="doc" style="padding:6px 12px; font-size:11px;" onclick="setResourceFilter('doc', this)">Docs</button>
+          <button class="vbtn secondary resource-filter-btn" id="filter-project" data-filter="project" style="padding:6px 12px; font-size:11px;" onclick="setResourceFilter('project', this)">Projets</button>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+          <div style="font-size:11px; font-weight:700; letter-spacing:2px; color:#4a5568; font-family:'Space Mono',monospace;">RÉCENTS</div>
+          <select id="resource-sort" class="vinput" style="max-width:170px; font-size:11px;" onchange="setResourceSort(this.value)">
+            <option value="latest">Trier par : Dernier ajouté</option>
+            <option value="popular">Trier par : Popularité</option>
+            <option value="type">Trier par : Type</option>
+          </select>
+        </div>
+
+        <div class="resource-grid" id="resource-list"></div>
+      </div>
+
+      <!-- ===== SCREEN: PROJECT DETAIL ===== -->
+      <div class="screen screen-content" id="s-project" style="display:none;">
+        <div style="margin-top:8px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+          <div>
+            <div class="screen-title" id="project-title">Projet</div>
+            <div class="screen-subtitle" id="project-subtitle">Détails</div>
+          </div>
+          <button class="vbtn secondary" style="font-size:11px;" onclick="goScreen('resources'); setActiveNav(-1)">← Retour</button>
+        </div>
+
+        <div class="vcard" style="--accent:#00D9FF;">
+          <div class="vcard-title" id="project-type"></div>
+          <div class="vcard-text" id="project-meta" style="margin-top:6px;"></div>
+          <div class="tag-row" id="project-tags" style="margin-top:12px;"></div>
+        </div>
+
+        <div class="vcard purple">
+          <div class="vcard-title">Description</div>
+          <div class="vcard-text" id="project-description"></div>
+        </div>
+
+        <div class="vcard green">
+          <div class="vcard-title">Points clés</div>
+          <div class="vcard-text" id="project-highlights"></div>
+        </div>
+
+        <div class="vcard amber" style="--accent:#FFB020;">
+          <div class="vcard-title">Livrables & étapes</div>
+          <div class="vcard-text" id="project-deliverables"></div>
+        </div>
+
+        <button class="vbtn primary full" style="font-size:11px;" onclick="openProjectLink()">Accéder au projet</button>
+      </div>
+
+      <!-- ===== SCREEN: ADMIN ===== -->
+      <div class="screen screen-content" id="s-admin">
+        <div style="margin-top:8px;">
+          <div class="screen-title">Admin</div>
+          <div class="screen-subtitle" style="color:#FF3E6C;">Accès Restreint · Role: ADMIN</div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <span class="stat-val">245</span>
+            <span class="stat-lbl">MEMBRES</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" style="color:#00FF88;">12</span>
+            <span class="stat-lbl">EVENTS</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" style="color:#9D4EDD;">4.8★</span>
+            <span class="stat-lbl">RATING</span>
+          </div>
+        </div>
+
+        <div class="admin-row" onclick="showAdminDetail('users')">
+          <div>
+            <div class="admin-label">👤 Gérer Utilisateurs</div>
+            <div class="admin-meta">RBAC · Admin / Member / Guest</div>
+          </div>
+          <div class="admin-arrow">›</div>
+        </div>
+
+        <div class="admin-row" onclick="showAdminDetail('events')">
+          <div>
+            <div class="admin-label">📝 Publier Événement</div>
+            <div class="admin-meta">Blog · Events · Projets</div>
+          </div>
+          <div class="admin-arrow">›</div>
+        </div>
+
+        <div class="admin-row" onclick="showAdminDetail('analytics')">
+          <div>
+            <div class="admin-label">📊 Analytics Dashboard</div>
+            <div class="admin-meta">Engagement · Présence</div>
+          </div>
+          <div class="admin-arrow">›</div>
+        </div>
+
+        <div class="admin-row" onclick="showAdminDetail('logs')">
+          <div>
+            <div class="admin-label">🔐 Logs Sécurité</div>
+            <div class="admin-meta">Chiffrement · Audit trail</div>
+          </div>
+          <div class="admin-arrow">›</div>
+        </div>
+
+        <div id="admin-detail" class="vcard" style="display:none; --accent:#00D9FF;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:14px;">
+            <div>
+              <div class="vcard-title" id="admin-detail-title"></div>
+              <div class="vcard-text" id="admin-detail-text"></div>
+            </div>
+            <button class="vbtn secondary" style="font-size:11px; padding:8px 12px; white-space:nowrap;" onclick="hideAdminDetail()">← Retour</button>
+          </div>
+          <div id="admin-detail-body"></div>
+        </div>
+
+        <button class="vbtn danger full" style="margin-top:8px;" onclick="goScreen('auth'); setActiveNav(-1)">Se déconnecter</button>
+      </div>
+
+      <!-- NAV BAR -->
+      <div class="nav-bar" id="nav-bar">
+        <button class="nav-btn active" onclick="goScreen('home'); setActiveNav(0)">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span class="nav-label">HOME</span>
+        </button>
+        <button class="nav-btn" onclick="goScreen('events'); setActiveNav(1)">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span class="nav-label">EVENTS</span>
+        </button>
+        <button class="nav-btn" onclick="goScreen('mentor'); setActiveNav(2)">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          <span class="nav-label">MENTOR</span>
+        </button>
+        <button class="nav-btn" onclick="goScreen('resources'); setActiveNav(3)">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span class="nav-label">DOCS</span>
+        </button>
+        <button class="nav-btn" onclick="goScreen('admin'); setActiveNav(4)">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="nav-label">ADMIN</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+  <script defer src='vital_tpl_app.js'></script>
+</body>
+</html>
+
